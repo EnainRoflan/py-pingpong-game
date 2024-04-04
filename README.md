@@ -1,2 +1,1 @@
-# py-pingpong-game
-simple ping pong game on python
+This is a simple ping pong game for 2 players made using python(pygame)
