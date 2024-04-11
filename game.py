@@ -32,8 +32,26 @@ class Players(GameSprite):
             self.rect.y -= self.speed
         if keys_pressed[K_DOWN] and self.rect.y < 570:
             self.rect.y += self.speed
+class Ball(GameSprite):
+    def __init__(self, player_image, speed, posX, posY, sizeX, sizeY):
+        super().__init__(player_image, speed, posX, posY, sizeX, sizeY)
+        self.velX = speed
+        self.velY = speed
+           
+    def update(self):
+        self.velY += 1
+        if sprite.collide_rect(player1, ball) or (player1, ball):
+            self.velX *= -1
+
+
+        self.rect.x += self.velX
+        self.rect.y += self.velY
+
+        
+
 player1 = Players('player.png', 10, 0, 341, 120, 120)
 player2 = Players('player.png', 10, 770, 341, 120, 120)
+ball = Ball('ball.png', 20, 0, 341, 90, 90)
 
 init()
 run = True
@@ -47,6 +65,8 @@ while run:
     player1.update()
     player2.reset()
     player2.updatep2()
+    ball.reset()
+    ball.update()
 
     clock.tick(40)
     display.update()
