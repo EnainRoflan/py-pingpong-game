@@ -39,19 +39,22 @@ class Ball(GameSprite):
         self.velY = speed
            
     def update(self):
-        self.velY += 1
-        if sprite.collide_rect(player1, ball) or (player1, ball):
+        if sprite.collide_rect(player1, ball) or sprite.collide_rect(player2, ball):
             self.velX *= -1
-
 
         self.rect.x += self.velX
         self.rect.y += self.velY
+
+        if self.rect.y >= 652 or self.rect.y <= 0:
+            self.velY *= -1
+        if self.rect.x >= 844 or self.rect.x <= 0:
+            self.velX *= -1
 
         
 
 player1 = Players('player.png', 10, 0, 341, 120, 120)
 player2 = Players('player.png', 10, 770, 341, 120, 120)
-ball = Ball('ball.png', 20, 0, 341, 90, 90)
+ball = Ball('ball.png', 3, 50, 50, 90, 90)
 
 init()
 run = True
