@@ -11,6 +11,8 @@ canCollideP2 = True
 font1 = font.SysFont('Arial', 40)
 p1win = font1.render('Игрок 1 победил', True, (0, 255, 0))
 p2win = font1.render('Игрок 2 победил', True, (0, 255, 0))
+#mixer.init()
+#hitsound = mixer.Sound('hit.wav')
 background = transform.scale(
         image.load('table.png'),
         (874, 682)
@@ -51,11 +53,13 @@ class Ball(GameSprite):
         if sprite.collide_rect(player1, ball) and canCollideP1 == True:
             self.velX *= -1
             p1score += 1
+            #hitsound.play()
             canCollideP1 = False
             canCollideP2 = True
         if sprite.collide_rect(player2, ball) and canCollideP2 == True:
             self.velX *= -1
             p2score += 1
+            #hitsound.play()
             canCollideP1 = True
             canCollideP2 = False
 
@@ -86,7 +90,7 @@ run = True
 while run:
     for e in event.get():
         if e.type == QUIT:
-            run = False 
+            run = False    
 
     window.blit(background, (0, 0))
     player1.reset()
