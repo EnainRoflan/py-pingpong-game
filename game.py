@@ -6,11 +6,11 @@ font.init()
 clock = time.Clock()
 p1score = 0
 p2score = 0
+canCollideP1 = True
+canCollideP2 = True
 font1 = font.SysFont('Arial', 40)
 p1win = font1.render('Игрок 1 победил', True, (0, 255, 0))
 p2win = font1.render('Игрок 2 победил', True, (0, 255, 0))
-p1scoretxt = font1.render(str(p1score), True, (0, 0, 0))
-p2scoretxt = font1.render(str(p2score), True, (0, 0, 0))
 background = transform.scale(
         image.load('table.png'),
         (874, 682)
@@ -46,12 +46,18 @@ class Ball(GameSprite):
            
     def update(self):
         global run
-        if sprite.collide_rect(player1, ball):
+        global p1score, p2score
+        global canCollideP1, canCollideP2
+        if sprite.collide_rect(player1, ball) and canCollideP1 == True:
             self.velX *= -1
             p1score += 1
-        if sprite.collide_rect(player2, ball):
+            canCollideP1 = False
+            canCollideP2 = True
+        if sprite.collide_rect(player2, ball) and canCollideP2 == True:
             self.velX *= -1
             p2score += 1
+            canCollideP1 = True
+            canCollideP2 = False
 
         self.rect.x += self.velX
         self.rect.y += self.velY
@@ -61,10 +67,10 @@ class Ball(GameSprite):
         if self.rect.x >= 844 or self.rect.x <= 0:
             self.velX *= -1
         
-        if self.rect.x <= 0:
+        if self.rect.x <= 0 or p2score == 20:
             window.blit(p2win, (337, 341))
             run = False
-        if self.rect.x >= 844:
+        if self.rect.x >= 844 or p1score == 20:
             window.blit(p1win, (337, 341))
             run = False
 
@@ -73,6 +79,7 @@ class Ball(GameSprite):
 player1 = Players('player.png', 10, 0, 341, 120, 120)
 player2 = Players('player.png', 10, 770, 341, 120, 120)
 ball = Ball('ball.png', 3, 50, 50, 90, 90)
+
 
 init()
 run = True
@@ -88,8 +95,10 @@ while run:
     player2.updatep2()
     ball.reset()
     ball.update()
-    window.blit(p1scoretxt, 20, 10)
-    window.blit(p2scoretxt, 600, 10)
+    p1scoretxt = font1.render(str(p1score), True, (0, 0, 0))
+    p2scoretxt = font1.render(str(p2score), True, (0, 0, 0))
+    window.blit(p1scoretxt, (20, 10))
+    window.blit(p2scoretxt, (835, 10))
 
     clock.tick(40)
     display.update()
